@@ -1,3 +1,5 @@
+# Bulk Provide Embedding for text
+
 import pandas as pd
 from umap import UMAP
 from sklearn.pipeline import make_pipeline 
@@ -11,14 +13,16 @@ text_emb_pipeline = make_pipeline(
   UMAP()
 )
 
-# Load sentences
-sentences = list(pd.read_csv("Data/Corona_NLP_train.csv",encoding="utf-8",encoding_errors="replace")['OriginalTweet'])
-# print(sentences[:10])
+# Load sentences COpy Paste since laziness is my motto
+sentences = list(pd.read_csv("Data/Corona_NLP_test.csv")['OriginalTweet'])
+
 # Calculate embeddings 
 X_tfm = text_emb_pipeline.fit_transform(sentences)
 
 # Write to disk. Note! Text column must be named "text"
 df = pd.DataFrame({"text": sentences})
-df['x'] = X_tfm[:, 0]
-df['y'] = X_tfm[:, 1]
-df.to_csv("ready.csv", index=False)
+df['x'] = X_tfm[:, 0]#X direction embedding 
+df['y'] = X_tfm[:, 1]#Y direction embedding
+df.to_csv("Output.csv", index=False)
+# It will take some time depending on ammount of Data
+# When embbeding process ends, we will see a csv file names output in file explorer
